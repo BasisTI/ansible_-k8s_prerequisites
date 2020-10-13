@@ -1,0 +1,54 @@
+---
+# tasks file for k8s_prerequisites
+- name: Remove swap from /etc/fstab
+  replace:
+    path: /etc/fstab
+    regexp: '^([^#].*?\sswap\s+.*)$'
+    replace: '# \1'
+    mode: '0644'
+
+- name: Disable swap
+  command: swapoff -a
+  changed_when: false
+
+- name: Enable kernel modules
+  modprobe:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ k8s_kernel_modules }}"
+
+- name: Sysctl settings
+  sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    sysctl_file: /etc/sysctl.d/k8s.conf
+    reload: yes
+    state: present
+  loop: "{{ k8s_sysctl_config | dict2items }}"
+
+- name: Set SELinux in permissive mode
+  command: setenforce permissive
+  changed_when: false
+  when:
+    - ansible_selinux is defined and
+      ansible_selinux.status | default ('') == 'enabled' and
+      ansible_selinux.type | default ('') == 'targeted' and
+      ansible_selinux.mode | default ('') != 'permissive'
+
+- name: Set SELinux in permissive mode on boot
+  selinux:
+    policy: targeted
+    state: permissive
+  when: 
+    - ansible_selinux is defined and
+      ansible_selinux.status | default ('') == 'enabled' and
+      ansible_selinux.type | default ('') == 'targeted' and
+      ansible_selinux.mode | default ('') != 'permissive'
+
+- name: Include firewalld rules tasks
+  include_tasks: firewalld.yml
+  when: k8s_os_firewall_enabled | bool and k8s_os_firewall_use_firewalld | bool
+
+- name: Include iptables rules tasks
+  include_tasks: iptables.yml
+  when: k8s_os_firewall_enabled | bool and not k8s_os_firewall_use_firewalld | bool

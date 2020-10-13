@@ -1,0 +1,32 @@
+---
+# defaults file for k8s_prerequisites
+k8s_os_firewall_enabled: True
+
+k8s_os_firewall_use_firewalld: False
+
+k8s_docker_options:
+  exec-opts: ["native.cgroupdriver=systemd"]
+  log-driver: "json-file"
+  log-opts: {"max-size": "100m"}
+  storage-driver: "overlay2"
+  storage-opts: ["overlay2.override_kernel_check=true"]
+
+k8s_sysctl_config:
+  net.bridge.bridge-nf-call-iptables: 1
+  net.bridge.bridge-nf-call-ip6tables: 1
+  vm.swappiness: 0
+
+k8s_kernel_modules:
+  - br_netfilter
+
+k8s_master_ports:
+  - 6443/tcp
+  - 10250/tcp
+
+k8s_etcd_ports:
+  - 2379-2380/tcp
+  - 10250/tcp
+
+k8s_worker_ports:
+  - 10250/tcp
+  - 30000-32767/tcp
