@@ -9,12 +9,8 @@ galaxy_info:
   license: MIT
   min_ansible_version: 2.9
   galaxy_tags:
+    - docker
     - kubernetes
-    - centos
-    - debian
-    - fedora
-    - redhat
-    - ubuntu
   platforms:
     - name: EL
       versions:
@@ -49,4 +45,8 @@ galaxy_info:
         - yakkety
         - zesty
 
-dependencies: []
+dependencies:
+  - name: os_firewall
+    src: basisconfig.os_firewall
+  - name: docker
+    src: basisconfig.docker
