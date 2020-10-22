@@ -4,12 +4,11 @@ k8s_os_firewall_enabled: True
 
 k8s_os_firewall_use_firewalld: False
 
-k8s_docker_options:
-  exec-opts: ["native.cgroupdriver=systemd"]
-  log-driver: "json-file"
-  log-opts: {"max-size": "100m"}
-  storage-driver: "overlay2"
-  storage-opts: ["overlay2.override_kernel_check=true"]
+docker_exec_opts: ["native.cgroupdriver=systemd"]
+docker_log_driver: "json-file"
+docker_log_opts: {"max-size": "100m"}
+docker_storage_driver: "overlay2"
+docker_storage_opts: ["overlay2.override_kernel_check=true"]
 
 k8s_sysctl_config:
   net.bridge.bridge-nf-call-iptables: 1

@@ -28,7 +28,7 @@
 
 - name: Enable masquerade
   firewalld:
-    masquerade: yes
+    masquerade: 'yes'
     permanent: yes
     immediate: yes
     state: enabled

@@ -15,6 +15,7 @@
   modprobe:
     name: "{{ item }}"
     state: present
+  ignore_errors: yes
   loop: "{{ k8s_kernel_modules }}"
 
 - name: Sysctl settings
@@ -30,20 +31,20 @@
   command: setenforce permissive
   changed_when: false
   when:
-    - ansible_selinux is defined and
-      ansible_selinux.status | default ('') == 'enabled' and
-      ansible_selinux.type | default ('') == 'targeted' and
-      ansible_selinux.mode | default ('') != 'permissive'
+    - ansible_selinux is defined
+    - ansible_selinux.status | default ('') == 'enabled'
+    - ansible_selinux.type | default ('') == 'targeted'
+    - ansible_selinux.mode | default ('') != 'permissive'
 
 - name: Set SELinux in permissive mode on boot
   selinux:
     policy: targeted
     state: permissive
-  when: 
-    - ansible_selinux is defined and
-      ansible_selinux.status | default ('') == 'enabled' and
-      ansible_selinux.type | default ('') == 'targeted' and
-      ansible_selinux.mode | default ('') != 'permissive'
+  when:
+    - ansible_selinux is defined
+    - ansible_selinux.status | default ('') == 'enabled'
+    - ansible_selinux.type | default ('') == 'targeted'
+    - ansible_selinux.mode | default ('') != 'permissive'
 
 - name: Include firewalld rules tasks
   include_tasks: firewalld.yml

@@ -1,5 +1,4 @@
 ---
 # vars file for k8s_prerequisites
-docker_options: "{{ k8s_docker_options }}"
 os_firewall_enabled: "{{ k8s_os_firewall_enabled }}"
 os_firewall_use_firewalld: "{{ k8s_os_firewall_use_firewalld }}"
