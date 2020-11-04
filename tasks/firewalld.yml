@@ -2,8 +2,8 @@
 - name: Master nodes - Inbound rules
   firewalld:
     port: "{{ item }}"
-    permanent: yes
-    immediate: yes
+    permanent: True
+    immediate: True
     state: enabled
   loop: "{{ k8s_master_ports }}"
   when: "'masters' in group_names"
@@ -11,8 +11,8 @@
 - name: Etcd nodes - Inbound rules
   firewalld:
     port: "{{ item }}"
-    permanent: yes
-    immediate: yes
+    permanent: True
+    immediate: True
     state: enabled
   loop: "{{ k8s_etcd_ports }}"
   when: "'etcd' in group_names"
@@ -20,8 +20,8 @@
 - name: Worker nodes - Inbound rules
   firewalld:
     port: "{{ item }}"
-    permanent: yes
-    immediate: yes
+    permanent: True
+    immediate: True
     state: enabled
   loop: "{{ k8s_worker_ports }}"
   when: "'workers' in group_names"
@@ -29,6 +29,6 @@
 - name: Enable masquerade
   firewalld:
     masquerade: 'yes'
-    permanent: yes
-    immediate: yes
+    permanent: True
+    immediate: True
     state: enabled

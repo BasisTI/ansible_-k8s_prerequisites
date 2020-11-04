@@ -6,4 +6,4 @@
 
 - name: Save iptables
   command: iptables-save
-  changed_when: no
+  changed_when: False

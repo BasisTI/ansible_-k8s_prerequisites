@@ -9,13 +9,13 @@
 
 - name: Disable swap
   command: swapoff -a
-  changed_when: false
+  changed_when: False
 
 - name: Enable kernel modules
   modprobe:
     name: "{{ item }}"
     state: present
-  ignore_errors: yes
+  ignore_errors: True
   loop: "{{ k8s_kernel_modules }}"
 
 - name: Sysctl settings
@@ -23,13 +23,13 @@
     name: "{{ item.key }}"
     value: "{{ item.value }}"
     sysctl_file: /etc/sysctl.d/k8s.conf
-    reload: yes
+    reload: True
     state: present
   loop: "{{ k8s_sysctl_config | dict2items }}"
 
 - name: Set SELinux in permissive mode
   command: setenforce permissive
-  changed_when: false
+  changed_when: False
   when:
     - ansible_selinux is defined
     - ansible_selinux.status | default ('') == 'enabled'
@@ -48,8 +48,8 @@
 
 - name: Include firewalld rules tasks
   include_tasks: firewalld.yml
-  when: k8s_os_firewall_enabled | bool and k8s_os_firewall_use_firewalld | bool
+  when: os_firewall_enabled and os_firewall_use_firewalld
 
 - name: Include iptables rules tasks
   include_tasks: iptables.yml
-  when: k8s_os_firewall_enabled | bool and not k8s_os_firewall_use_firewalld | bool
+  when: os_firewall_enabled and not os_firewall_use_firewalld
