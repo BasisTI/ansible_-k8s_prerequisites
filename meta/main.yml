@@ -46,7 +46,5 @@ galaxy_info:
         - zesty
 
 dependencies:
-  - src: basisconfig.os_firewall
-    name: os_firewall
-  - src: basisconfig.docker
-    name: docker
+  - name: basisconfig.os_firewall
+  - name: basisconfig.docker
