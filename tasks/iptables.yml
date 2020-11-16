@@ -1,9 +1,9 @@
 ---
-- name: Set the policy for the FORWARD chain to ACCEPT
+- name: Set the policy for the DOCKER-USER chain to ACCEPT
   iptables:
-    chain: FORWARD
+    chain: DOCKER-USER
     policy: ACCEPT
 
 - name: Save iptables
-  command: iptables-save > /etc/iptables-save
+  command: iptables-save > /etc/sysconfig/iptables
   changed_when: False
