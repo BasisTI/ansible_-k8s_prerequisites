@@ -9,3 +9,9 @@
 - name: Save iptables
   shell: iptables-save > /etc/sysconfig/iptables
   changed_when: False
+  when: ansible_os_family == 'RedHat'
+
+- name: Save iptables
+  shell: iptables-save > /etc/iptables/rules.v4
+  changed_when: False
+  when: ansible_os_family == 'Debian'
