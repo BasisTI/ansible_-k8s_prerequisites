@@ -2,7 +2,9 @@
 - name: Set the policy for the DOCKER-USER chain to ACCEPT
   iptables:
     chain: DOCKER-USER
-    policy: ACCEPT
+    action: insert
+    rule_num: 1
+    jump: ACCEPT
 
 - name: Save iptables
   command: iptables-save > /etc/sysconfig/iptables
