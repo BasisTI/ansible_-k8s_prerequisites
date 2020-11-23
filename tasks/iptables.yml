@@ -3,9 +3,9 @@
   iptables:
     chain: DOCKER-USER
     action: insert
-    rule_num: 1
+    rule_num: '1'
     jump: ACCEPT
 
 - name: Save iptables
-  command: iptables-save > /etc/sysconfig/iptables
+  shell: iptables-save > /etc/sysconfig/iptables
   changed_when: False
